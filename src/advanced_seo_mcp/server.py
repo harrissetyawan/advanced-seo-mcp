@@ -1,11 +1,20 @@
 from fastmcp import FastMCP
 from typing import Dict, Any, List, Optional
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
 from .providers.onpage_analyzer import analyze_onpage
 from .providers.technical_auditor import check_technical_health
 from .providers.reporter import generate_markdown_report
 from .providers.psi_analyzer import analyze_speed
 from .providers.competitor_analyzer import analyze_competitors
 from .providers.sitemap_auditor import audit_sitemap
+from .providers.schema_validator import validate_schema
+from .providers.link_inspector import check_broken_links
+from .providers.content_analyzer import analyze_keywords
 from .providers.ahrefs_scraper import (
     get_backlinks_data, 
     generate_keywords, 
@@ -41,6 +50,27 @@ def analyze_page_speed(url: str, strategy: str = "mobile") -> Dict[str, Any]:
         strategy: 'mobile' or 'desktop'.
     """
     return analyze_speed(url, strategy)
+
+@mcp.tool()
+def check_schema_markup(url: str) -> Dict[str, Any]:
+    """
+    Validates JSON-LD Schema Markup on a page.
+    """
+    return validate_schema(url)
+
+@mcp.tool()
+def check_broken_links_on_page(url: str, limit: int = 20) -> Dict[str, Any]:
+    """
+    Scans a page for broken links (404s).
+    """
+    return check_broken_links(url, limit)
+
+@mcp.tool()
+def analyze_content_density(url: str, target_keyword: str = None) -> Dict[str, Any]:
+    """
+    Analyzes keyword density and TF-IDF metrics.
+    """
+    return analyze_keywords(url, target_keyword)
 
 @mcp.tool()
 def compare_competitors(my_domain: str, competitor_domain: str) -> Dict[str, Any]:
