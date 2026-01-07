@@ -2,9 +2,12 @@ from fastmcp import FastMCP
 from typing import Dict, Any, List, Optional
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment variables from .env file (Dynamic Path)
+# Looks for .env in the project root (2 levels up from this file)
+root_dir = Path(__file__).resolve().parents[2]
+load_dotenv(root_dir / '.env')
 
 from .providers.onpage_analyzer import analyze_onpage
 from .providers.technical_auditor import check_technical_health
