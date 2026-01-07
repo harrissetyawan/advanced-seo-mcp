@@ -22,6 +22,7 @@ pip-delete-this-directory.txt
 status.lib
 .installed.cfg
 *.egg
+*.egg-info/
 
 # Virtual Environment
 .venv/
@@ -30,11 +31,16 @@ ENV/
 
 # Configuration & Secrets
 .env
+.env.local
 .clasprc.json
 
 # Local Cache Database
 *.db
 *.db-journal
+
+# Reports & Logs
+reports/
+*.log
 
 # IDEs
 .vscode/
