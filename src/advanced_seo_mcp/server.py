@@ -3,6 +3,9 @@ from typing import Dict, Any, List, Optional
 from .providers.onpage_analyzer import analyze_onpage
 from .providers.technical_auditor import check_technical_health
 from .providers.reporter import generate_markdown_report
+from .providers.psi_analyzer import analyze_speed
+from .providers.competitor_analyzer import analyze_competitors
+from .providers.sitemap_auditor import audit_sitemap
 from .providers.ahrefs_scraper import (
     get_backlinks_data, 
     generate_keywords, 
@@ -16,7 +19,7 @@ mcp = FastMCP("Advanced SEO MCP")
 def generate_audit_report(url: str, include_ahrefs: bool = True) -> str:
     """
     Generates a full SEO audit report (Markdown) and saves it locally.
-    Combines On-Page, Technical, and Ahrefs data into a single file.
+    Combines On-Page, Technical, Ahrefs data into a single file.
     
     Args:
         url: The URL to analyze.
@@ -26,6 +29,38 @@ def generate_audit_report(url: str, include_ahrefs: bool = True) -> str:
         The absolute file path of the saved report.
     """
     return generate_markdown_report(url, include_ahrefs)
+
+@mcp.tool()
+def analyze_page_speed(url: str, strategy: str = "mobile") -> Dict[str, Any]:
+    """
+    Analyzes site speed using Google PageSpeed Insights.
+    Requires GOOGLE_PSI_API_KEY in .env.
+    
+    Args:
+        url: URL to test.
+        strategy: 'mobile' or 'desktop'.
+    """
+    return analyze_speed(url, strategy)
+
+@mcp.tool()
+def compare_competitors(my_domain: str, competitor_domain: str) -> Dict[str, Any]:
+    """
+    Compares SEO metrics (Backlinks, Traffic, DR) of two domains.
+    Requires CAPSOLVER_API_KEY.
+    """
+    return analyze_competitors(my_domain, competitor_domain)
+
+@mcp.tool()
+def bulk_sitemap_audit(url: str, limit: int = 5) -> Dict[str, Any]:
+    """
+    Scans the sitemap and runs On-Page audit on multiple pages.
+    Useful for finding site-wide issues (e.g., missing H1s).
+    
+    Args:
+        url: Domain URL (e.g. 'example.com').
+        limit: Max number of pages to scan (Default: 5). High numbers take time!
+    """
+    return audit_sitemap(url, limit)
 
 @mcp.tool()
 def onpage_audit(url: str) -> Dict[str, Any]:
