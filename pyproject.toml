@@ -1,0 +1,19 @@
+[project]
+name = "advanced-seo-mcp"
+version = "0.1.0"
+description = "Advanced SEO research tools for AI agents"
+dependencies = [
+    "fastmcp",
+    "requests",
+    "beautifulsoup4",
+    "lxml",
+    "fake-useragent"
+]
+requires-python = ">=3.10"
+
+[project.scripts]
+advanced-seo = "advanced_seo_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
