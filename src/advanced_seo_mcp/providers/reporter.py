@@ -4,7 +4,7 @@ from typing import Dict, Any
 from pathlib import Path
 from .onpage_analyzer import analyze_onpage
 from .technical_auditor import check_technical_health
-from .ahrefs_scraper import get_backlinks_data, estimate_traffic
+from .ahrefs_scraper import get_backlinks_data, get_traffic_data
 
 def generate_markdown_report(url: str, include_ahrefs: bool = True) -> str:
     """
@@ -34,7 +34,7 @@ def generate_markdown_report(url: str, include_ahrefs: bool = True) -> str:
             print(f"🔗 Fetching Backlinks via CapSolver...")
             ahrefs = get_backlinks_data(domain)
             print(f"📈 Estimating Traffic...")
-            traffic = estimate_traffic(domain)
+            traffic = get_traffic_data(domain)
         except Exception as e:
             print(f"⚠️ Ahrefs data skipped: {e}")
 

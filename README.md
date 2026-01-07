@@ -13,203 +13,77 @@
 
 ## 📖 Overview
 
-**Advanced SEO MCP** is a robust Model Context Protocol (MCP) server designed to equip AI agents (like Claude Desktop, Cursor, etc.) with professional-grade SEO capabilities. Unlike simple scrapers, this tool combines **On-Page analysis**, **Technical Audits**, and **Ahrefs Data** (via CapSolver) into a unified, agent-friendly interface.
-
-It features a smart **caching layer** (SQLite) to minimize API costs and maximize performance.
+**Advanced SEO MCP** is a robust Model Context Protocol (MCP) server designed to equip AI agents with professional-grade SEO capabilities. It combines **On-Page analysis**, **Technical Audits**, **Google PageSpeed Insights**, and **Ahrefs Data** into a unified interface.
 
 ## ✨ Key Features
 
 ### 🔍 1. Deep On-Page Analysis
-Analyze the content structure of any URL without external APIs.
-- **Meta Tags Audit:** Title, Description, Canonical, Robots.
-- **Content Hierarchy:** H1-H6 structure visualization.
-- **Content Quality:** Word count, "thin content" detection.
-- **Link Profile:** Internal vs. External link ratios.
-- **Image Audit:** Identification of images missing Alt tags.
+Analyze the content structure of any URL.
+- **Meta Tags:** Title, Description, Canonical.
+- **Content:** Heading hierarchy (H1-H6), word count, "thin content" check.
 
-### 🛠️ 2. Technical Health Check
-Perform rapid technical audits on domains.
-- **Security Headers:** HSTS, X-Frame-Options, SSL/HTTPS check.
-- **Crawling:** Validation of `robots.txt` and `sitemap.xml` presence/accessibility.
+### 🛠️ 2. Technical & Speed Audits
+- **Technical Health:** `robots.txt`, `sitemap.xml`, and security headers.
+- **Bulk Sitemap Audit:** Scans multiple pages from a sitemap automatically.
+- **PageSpeed Insights:** Real-time Core Web Vitals (LCP, CLS, INP) via Google API.
 
-### 📊 3. Ahrefs Intelligence (Powered by CapSolver)
-Access premium SEO data using CapSolver to bypass protections legally.
-- **Backlink Explorer:** Domain Rating (DR), total backlinks, and referring domains.
-- **Keyword Research:** Generate keyword ideas, question-based queries, and search volumes.
-- **Traffic Estimator:** Monthly traffic estimates and traffic value.
-- **Keyword Difficulty (KD):** SERP overview and difficulty scores.
+### 📊 3. Ahrefs Intelligence (via CapSolver)
+- **Backlink Explorer:** Domain Rating (DR), total backlinks.
+- **Keyword Research:** Generate keyword ideas and questions.
+- **Traffic Estimator:** Monthly organic traffic estimates.
+- **Competitor Analysis:** Head-to-head comparison of two domains.
 
-### ⚡ 4. Smart Caching
-- **Cost Efficiency:** Caches expensive scraping results locally (`~/.advanced_seo_mcp_cache.db`).
-- **Performance:** Instant results for repeated queries.
-
----
-
-## 🏗️ Architecture
-
-```mermaid
-graph TD
-    User[AI Agent / Client] -->|MCP Protocol| Server[MCP Server (FastMCP)]
-    Server -->|Route| Provider1[OnPage Analyzer]
-    Server -->|Route| Provider2[Technical Auditor]
-    Server -->|Route| Provider3[Ahrefs Scraper]
-    
-    Provider1 -->|Request| TargetURL[Target Website]
-    Provider2 -->|Request| TargetURL
-    
-    Provider3 -->|Captcha Solve| Utils[CapSolver Utils]
-    Utils -->|API Call| CapSolverAPI[CapSolver.com]
-    
-    Provider3 -->|Check| Cache[(SQLite Cache)]
-```
+### 📝 4. Auto-Reporting
+- **Markdown Reports:** Generates a comprehensive `.md` audit report with a single command.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- Python 3.10 or higher
-- [uv](https://github.com/astral-sh/uv) (Recommended) or pip
-- A [CapSolver](https://capsolver.com) API Key (for Ahrefs features only)
+- Python 3.10+
+- `uv` or `pip`
 
 ### Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/advanced-seo-mcp.git
-   cd advanced-seo-mcp
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   # Using uv (faster)
-   uv pip install .
-   
-   # Or using standard pip
-   pip install .
-   ```
+```bash
+git clone https://github.com/yourusername/advanced-seo-mcp.git
+cd advanced-seo-mcp
+uv pip install .
+```
 
 ### Configuration
 
-Set your CapSolver API key as an environment variable. This is required only if you plan to use the Backlink, Keyword, or Traffic tools. The On-Page and Technical tools work freely without it.
+Rename `.env.example` to `.env` and add your keys:
 
 ```bash
-export CAPSOLVER_API_KEY="your_capsolver_key_here"
+# Required for Backlinks, Keywords, Traffic
+CAPSOLVER_API_KEY="your_capsolver_key"
+
+# Required for PageSpeed Analysis
+GOOGLE_PSI_API_KEY="your_google_psi_key"
+```
+
+### ♊ Adding to Gemini CLI
+
+```bash
+gemini install .
 ```
 
 ---
 
 ## 📚 Tools Reference
 
-### `onpage_audit`
-Performs a comprehensive content and structure audit.
-- **Arguments:** `url` (str)
-- **Returns:** JSON object with meta tags, headings, content stats, and link counts.
-
-### `technical_health_check`
-Checks the technical foundation of a website.
-- **Arguments:** `url` (str)
-- **Returns:** JSON object with robots.txt status, sitemap status, and security headers.
-
-### `get_backlinks` 🔐
-Retrieves backlink profile and Domain Rating.
-- **Arguments:** `domain` (str)
-- **Requires:** `CAPSOLVER_API_KEY`
-
-### `keyword_ideas` 🔐
-Generates related keywords and questions.
-- **Arguments:** `keyword` (str), `country` (str, default="us")
-- **Requires:** `CAPSOLVER_API_KEY`
-
-### `estimate_traffic` 🔐
-Estimates organic search traffic.
-- **Arguments:** `domain` (str), `country` (str, optional)
-- **Requires:** `CAPSOLVER_API_KEY`
-
-### `check_difficulty` 🔐
-Analyzes how hard it is to rank for a keyword.
-- **Arguments:** `keyword` (str), `country` (str, default="us")
-- **Requires:** `CAPSOLVER_API_KEY`
-
-*(🔐 = Requires CapSolver API Key)*
-
----
-
-## 🔌 Integration Guide
-
-To use these tools in your AI editor or agent, you need to register this MCP server.
-
-### 🔑 1. API Key Setup (Crucial)
-1. Get your API Key from [CapSolver Dashboard](https://dashboard.capsolver.com/).
-2. Rename `.env.example` to `.env` in this folder:
-   ```bash
-   mv .env.example .env
-   ```
-3. Paste your key into the `.env` file.
-
-### 🖱️ 2. Adding to Cursor (AI Editor)
-
-1. Open **Cursor Settings** > **General** > **MCP**.
-2. Click **"Add New MCP Server"**.
-3. Fill in the details:
-   - **Name:** `Advanced SEO`
-   - **Type:** `command` (stdio)
-   - **Command:** `uv` (ensure `uv` is installed, or use full path to python)
-   - **Args:**
-     ```text
-     run
-     --directory
-     /ABSOLUTE/PATH/TO/advanced-seo-mcp
-     advanced-seo
-     ```
-   - **Environment Variables:**
-     - Key: `CAPSOLVER_API_KEY`
-     - Value: `your_actual_key_here` (or rely on the .env file if supported by your runner)
-
-### 🤖 3. Adding to Claude Desktop
-
-... (previous content) ...
-
-### ♊ 4. Adding to Gemini CLI
-
-To use this with the Gemini CLI:
-
-1. Copy your CapSolver key to the `gemini-extension.json` file (or ensure your `.env` is loaded).
-2. Install the extension (if supported by your version) or simply point your agent to this directory.
-3. You can run it via:
-   ```bash
-   gemini --extension ./gemini-extension.json "analyze onpage for 2run.be"
-   ```
-
----
-
-## 💻 Development
-
-### Running Locally
-
-To run the MCP server locally for testing or development:
-
-```bash
-# Run the server
-python -m advanced_seo_mcp.server
-```
-
-### Project Structure
-
-```text
-src/
-└── advanced_seo_mcp/
-    ├── server.py              # Main Entry Point & Tool Definitions
-    ├── providers/             # Logic Providers
-    │   ├── onpage_analyzer.py    # BeautifulSoup Logic
-    │   ├── technical_auditor.py  # Request/Header Logic
-    │   └── ahrefs_scraper.py     # Scraper Logic
-    └── utils/
-        ├── cache.py           # SQLite Caching
-        └── capsolver.py       # Captcha Solving Logic
-```
+| Tool | Description | Requires Key |
+|------|-------------|--------------|
+| `generate_audit_report` | **Best!** Generates a full Markdown SEO report. | ✅ CapSolver |
+| `onpage_audit` | Analyzes content, meta tags, and structure. | ❌ No |
+| `technical_health_check` | Checks robots.txt, sitemap, security headers. | ❌ No |
+| `analyze_page_speed` | Google PageSpeed Insights (Mobile/Desktop). | ✅ Google PSI |
+| `compare_competitors` | Compares Backlinks/Traffic of 2 domains. | ✅ CapSolver |
+| `bulk_sitemap_audit` | Scans sitemap and audits multiple pages. | ❌ No |
+| `get_backlinks` | Gets DR and top backlinks. | ✅ CapSolver |
+| `keyword_ideas` | Generates keywords and questions. | ✅ CapSolver |
 
 ## 📝 License
-
-This project is licensed under the MIT License.
+MIT
