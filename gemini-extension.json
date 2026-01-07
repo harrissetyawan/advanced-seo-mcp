@@ -1,0 +1,20 @@
+{
+  "name": "advanced-seo",
+  "version": "0.1.0",
+  "description": "Advanced SEO analysis tools (On-page, Technical, Ahrefs)",
+  "mcpServers": [
+    {
+      "id": "advanced-seo-mcp",
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/Users/halil/code/advanced-seo-mcp",
+        "advanced-seo"
+      ],
+      "env": {
+        "CAPSOLVER_API_KEY": "" 
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ from fastmcp import FastMCP
 from typing import Dict, Any, List, Optional
 from .providers.onpage_analyzer import analyze_onpage
 from .providers.technical_auditor import check_technical_health
+from .providers.reporter import generate_markdown_report
 from .providers.ahrefs_scraper import (
     get_backlinks_data, 
     generate_keywords, 
@@ -10,6 +11,21 @@ from .providers.ahrefs_scraper import (
 )
 
 mcp = FastMCP("Advanced SEO MCP")
+
+@mcp.tool()
+def generate_audit_report(url: str, include_ahrefs: bool = True) -> str:
+    """
+    Generates a full SEO audit report (Markdown) and saves it locally.
+    Combines On-Page, Technical, and Ahrefs data into a single file.
+    
+    Args:
+        url: The URL to analyze.
+        include_ahrefs: Whether to fetch backlink/traffic data using CapSolver (Default: True).
+        
+    Returns:
+        The absolute file path of the saved report.
+    """
+    return generate_markdown_report(url, include_ahrefs)
 
 @mcp.tool()
 def onpage_audit(url: str) -> Dict[str, Any]:

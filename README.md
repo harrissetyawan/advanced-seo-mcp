@@ -169,31 +169,18 @@ To use these tools in your AI editor or agent, you need to register this MCP ser
 
 ### 🤖 3. Adding to Claude Desktop
 
-Edit your configuration file:
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+... (previous content) ...
 
-Add this entry:
+### ♊ 4. Adding to Gemini CLI
 
-```json
-{
-  "mcpServers": {
-    "advanced-seo": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/ABSOLUTE/PATH/TO/advanced-seo-mcp", 
-        "advanced-seo"
-      ],
-      "env": {
-        "CAPSOLVER_API_KEY": "CAP-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-      }
-    }
-  }
-}
-```
-*(Note: Replace `/ABSOLUTE/PATH/TO/...` with the actual full path to this folder)*
+To use this with the Gemini CLI:
+
+1. Copy your CapSolver key to the `gemini-extension.json` file (or ensure your `.env` is loaded).
+2. Install the extension (if supported by your version) or simply point your agent to this directory.
+3. You can run it via:
+   ```bash
+   gemini --extension ./gemini-extension.json "analyze onpage for 2run.be"
+   ```
 
 ---
 
