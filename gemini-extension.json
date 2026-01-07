@@ -1,19 +1,17 @@
 {
-  "name": "advanced-seo",
+  "name": "Advanced SEO (Ahrefs & PSI)",
   "version": "0.1.0",
-  "description": "Advanced SEO analysis tools (On-page, Technical, Ahrefs)",
+  "description": "Professional SEO suite: On-Page, Technical, Ahrefs Data, Speed Tests & Reporting",
   "mcpServers": [
     {
       "id": "advanced-seo-mcp",
-      "command": "uv",
+      "command": "/Users/halil/code/advanced-seo-mcp/.venv/bin/python",
       "args": [
-        "run",
-        "--directory",
-        "/Users/halil/code/advanced-seo-mcp",
-        "advanced-seo"
+        "-m",
+        "advanced_seo_mcp.server"
       ],
       "env": {
-        "CAPSOLVER_API_KEY": "" 
+        "PYTHONPATH": "/Users/halil/code/advanced-seo-mcp/src"
       }
     }
   ]

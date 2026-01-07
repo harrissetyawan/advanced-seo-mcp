@@ -1,18 +1,36 @@
 [project]
 name = "advanced-seo-mcp"
 version = "0.1.0"
-description = "Advanced SEO research tools for AI agents"
+description = "Professional SEO Analysis MCP Server for AI Agents (Ahrefs, PSI, Technical)"
+readme = "README.md"
+authors = [
+    { name = "Halil Ertekin", email = "halil@2run.be" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 dependencies = [
-    "fastmcp",
-    "requests",
-    "beautifulsoup4",
-    "lxml",
-    "fake-useragent"
+    "fastmcp>=2.14.2",
+    "requests>=2.32.5",
+    "beautifulsoup4>=4.14.3",
+    "lxml>=6.0.2",
+    "fake-useragent>=2.2.0",
+    "python-dotenv>=1.0.0"
 ]
 requires-python = ">=3.10"
 
 [project.scripts]
 advanced-seo = "advanced_seo_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/halilertekin/advanced-seo-mcp"
+Repository = "https://github.com/halilertekin/advanced-seo-mcp"
 
 [build-system]
 requires = ["hatchling"]

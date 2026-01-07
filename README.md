@@ -13,17 +13,19 @@
 
 ## 📖 Overview
 
-**Advanced SEO MCP** is a robust Model Context Protocol (MCP) server designed to equip AI agents with professional-grade SEO capabilities. It combines **On-Page analysis**, **Technical Audits**, **Google PageSpeed Insights**, and **Ahrefs Data** into a unified interface.
+**Advanced SEO MCP** is a robust Model Context Protocol (MCP) server designed to equip AI agents (Cursor, Claude, Gemini) with professional-grade SEO capabilities. It combines **On-Page analysis**, **Technical Audits**, **Google PageSpeed Insights**, and **Ahrefs Data** (via CapSolver) into a unified interface.
 
 ## ✨ Key Features
 
 ### 🔍 1. Deep On-Page Analysis
-Analyze the content structure of any URL.
 - **Meta Tags:** Title, Description, Canonical.
 - **Content:** Heading hierarchy (H1-H6), word count, "thin content" check.
+- **Keyword Density:** TF-IDF style keyword analysis.
+- **Schema Validation:** Checks JSON-LD structured data for errors.
 
 ### 🛠️ 2. Technical & Speed Audits
-- **Technical Health:** `robots.txt`, `sitemap.xml`, and security headers.
+- **Technical Health:** `robots.txt`, `sitemap.xml`, security headers (HSTS, HTTPS).
+- **Broken Link Checker:** Scans for 404 links on the page.
 - **Bulk Sitemap Audit:** Scans multiple pages from a sitemap automatically.
 - **PageSpeed Insights:** Real-time Core Web Vitals (LCP, CLS, INP) via Google API.
 
@@ -42,14 +44,18 @@ Analyze the content structure of any URL.
 
 ### Prerequisites
 - Python 3.10+
-- `uv` or `pip`
+- `uv` (Recommended) or `pip`
 
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/advanced-seo-mcp.git
+git clone https://github.com/halilertekin/advanced-seo-mcp.git
 cd advanced-seo-mcp
-uv pip install .
+
+# Setup Virtual Environment
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
 ```
 
 ### Configuration
@@ -57,6 +63,10 @@ uv pip install .
 Rename `.env.example` to `.env` and add your keys:
 
 ```bash
+mv .env.example .env
+```
+
+```ini
 # Required for Backlinks, Keywords, Traffic
 CAPSOLVER_API_KEY="your_capsolver_key"
 
@@ -64,26 +74,63 @@ CAPSOLVER_API_KEY="your_capsolver_key"
 GOOGLE_PSI_API_KEY="your_google_psi_key"
 ```
 
-### ♊ Adding to Gemini CLI
+---
+
+## 🔌 Integration Guide
+
+### ♊ Gemini CLI (Easiest)
+
+If you have the Gemini CLI installed:
 
 ```bash
-gemini install .
+ln -s $(pwd) ~/.gemini/extensions/advanced-seo-mcp
+```
+*Restart your Gemini CLI session to see the new tools.*
+
+### 🖱️ Cursor (AI Editor)
+
+1. Go to **Settings** > **MCP**.
+2. Click **"Add New MCP Server"**.
+3. Use the absolute path to your virtual environment python:
+   - **Type:** `command`
+   - **Command:** `/ABSOLUTE/PATH/TO/advanced-seo-mcp/.venv/bin/python`
+   - **Args:** `-m advanced_seo_mcp.server`
+   - **Environment Variables:**
+     - `PYTHONPATH`: `/ABSOLUTE/PATH/TO/advanced-seo-mcp/src`
+
+### 🤖 Claude Desktop
+
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "advanced-seo": {
+      "command": "/ABSOLUTE/PATH/TO/advanced-seo-mcp/.venv/bin/python",
+      "args": ["-m", "advanced_seo_mcp.server"],
+      "env": {
+        "PYTHONPATH": "/ABSOLUTE/PATH/TO/advanced-seo-mcp/src"
+      }
+    }
+  }
+}
 ```
 
 ---
 
 ## 📚 Tools Reference
 
-| Tool | Description | Requires Key |
-|------|-------------|--------------|
-| `generate_audit_report` | **Best!** Generates a full Markdown SEO report. | ✅ CapSolver |
-| `onpage_audit` | Analyzes content, meta tags, and structure. | ❌ No |
-| `technical_health_check` | Checks robots.txt, sitemap, security headers. | ❌ No |
-| `analyze_page_speed` | Google PageSpeed Insights (Mobile/Desktop). | ✅ Google PSI |
-| `compare_competitors` | Compares Backlinks/Traffic of 2 domains. | ✅ CapSolver |
-| `bulk_sitemap_audit` | Scans sitemap and audits multiple pages. | ❌ No |
-| `get_backlinks` | Gets DR and top backlinks. | ✅ CapSolver |
-| `keyword_ideas` | Generates keywords and questions. | ✅ CapSolver |
+| Tool | Description |
+|------|-------------|
+| `generate_audit_report` | **Best!** Generates a full Markdown SEO report. |
+| `onpage_audit` | Analyzes content, meta tags, and structure. |
+| `analyze_page_speed` | Google PageSpeed Insights (Mobile/Desktop). |
+| `check_schema_markup` | Validates JSON-LD Schema. |
+| `check_broken_links_on_page` | Finds broken (404) links. |
+| `compare_competitors` | Compares Backlinks/Traffic of 2 domains. |
+| `bulk_sitemap_audit` | Scans sitemap and audits multiple pages. |
+| `get_backlinks` | Gets DR and top backlinks (Ahrefs). |
+| `keyword_ideas` | Generates keywords (Ahrefs). |
 
 ## 📝 License
 MIT
