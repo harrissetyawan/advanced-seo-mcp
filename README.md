@@ -136,6 +136,67 @@ Analyzes how hard it is to rank for a keyword.
 
 ---
 
+## 🔌 Integration Guide
+
+To use these tools in your AI editor or agent, you need to register this MCP server.
+
+### 🔑 1. API Key Setup (Crucial)
+1. Get your API Key from [CapSolver Dashboard](https://dashboard.capsolver.com/).
+2. Rename `.env.example` to `.env` in this folder:
+   ```bash
+   mv .env.example .env
+   ```
+3. Paste your key into the `.env` file.
+
+### 🖱️ 2. Adding to Cursor (AI Editor)
+
+1. Open **Cursor Settings** > **General** > **MCP**.
+2. Click **"Add New MCP Server"**.
+3. Fill in the details:
+   - **Name:** `Advanced SEO`
+   - **Type:** `command` (stdio)
+   - **Command:** `uv` (ensure `uv` is installed, or use full path to python)
+   - **Args:**
+     ```text
+     run
+     --directory
+     /ABSOLUTE/PATH/TO/advanced-seo-mcp
+     advanced-seo
+     ```
+   - **Environment Variables:**
+     - Key: `CAPSOLVER_API_KEY`
+     - Value: `your_actual_key_here` (or rely on the .env file if supported by your runner)
+
+### 🤖 3. Adding to Claude Desktop
+
+Edit your configuration file:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add this entry:
+
+```json
+{
+  "mcpServers": {
+    "advanced-seo": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/ABSOLUTE/PATH/TO/advanced-seo-mcp", 
+        "advanced-seo"
+      ],
+      "env": {
+        "CAPSOLVER_API_KEY": "CAP-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      }
+    }
+  }
+}
+```
+*(Note: Replace `/ABSOLUTE/PATH/TO/...` with the actual full path to this folder)*
+
+---
+
 ## 💻 Development
 
 ### Running Locally
