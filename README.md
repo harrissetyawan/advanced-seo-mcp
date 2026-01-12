@@ -17,62 +17,67 @@
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Installation
 
-### 1. Installation
+### Option 1: One-Command Install (Recommended)
 
-Clone and install dependencies:
-
-```bash
-git clone https://github.com/halilertekin/advanced-seo-mcp.git
-cd advanced-seo-mcp
-
-# Create virtual environment and install
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install .
-```
-
-### 2. Configuration (API Keys)
-
-Rename the example file and add your keys:
+If you have [uv](https://github.com/astral-sh/uv) installed, you can install this extension directly with Gemini CLI. `uv` handles all Python dependencies automatically.
 
 ```bash
-mv .env.example .env
+gemini extensions install https://github.com/halilertekin/advanced-seo-mcp
 ```
 
-Edit `.env`:
-```ini
-CAPSOLVER_API_KEY="your_capsolver_key"
-GOOGLE_PSI_API_KEY="your_google_psi_key"
-```
+*Note: You will need to configure your API keys in the `.env` file inside the extension directory after installation.*
 
-### 3. Setup (Crucial Step)
+### Option 2: Manual Developer Setup
 
-Run the setup script to generate the configuration file for your specific machine:
+If you want to modify the code or don't use `uv`, follow these steps:
 
-```bash
-python setup_extension.py
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/halilertekin/advanced-seo-mcp.git
+    cd advanced-seo-mcp
+    ```
 
-*This will generate a valid `gemini-extension.json` with the correct absolute paths for your system.*
+2.  **Create virtual environment & Install:**
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate  # Windows: .venv\Scripts\activate
+    pip install -e .
+    ```
+
+3.  **Setup Configuration:**
+    Run the setup script to generate the local configuration:
+    ```bash
+    python setup_extension.py
+    ```
+
+4.  **Link to Gemini:**
+    ```bash
+    ln -s $(pwd) ~/.gemini/extensions/advanced-seo-mcp
+    ```
 
 ---
 
-## 🔌 Integration Guide
+## 🔑 Configuration
 
-### ♊ Gemini CLI
+This server requires API keys for full functionality.
 
-After running `python setup_extension.py`:
+1.  Create a `.env` file in the project root (or rename `.env.example`):
+    ```bash
+    cp .env.example .env
+    ```
 
-```bash
-ln -s $(pwd) ~/.gemini/extensions/advanced-seo-mcp
-```
-*Restart your Gemini CLI session.*
+2.  Add your API keys:
+    ```ini
+    # Required for Ahrefs Tools (Backlinks, Keywords, Traffic)
+    # Get key: https://dashboard.capsolver.com/
+    CAPSOLVER_API_KEY="your_capsolver_key"
 
-### 🖱️ Cursor / Claude
-
-The `setup_extension.py` script ensures `gemini-extension.json` has the correct paths. You can manually copy the `command`, `args`, and `env` from that file into your Cursor or Claude settings if needed.
+    # Required for PageSpeed Insights
+    # Get key: https://developers.google.com/speed/docs/insights/v5/get-started
+    GOOGLE_PSI_API_KEY="your_google_psi_key"
+    ```
 
 ---
 
@@ -80,15 +85,15 @@ The `setup_extension.py` script ensures `gemini-extension.json` has the correct 
 
 | Tool | Description |
 |------|-------------|
-| `generate_audit_report` | **Best!** Generates a full Markdown SEO report. |
-| `onpage_audit` | Analyzes content, meta tags, and structure. |
-| `analyze_page_speed` | Google PageSpeed Insights (Mobile/Desktop). |
-| `check_schema_markup` | Validates JSON-LD Schema. |
-| `check_broken_links_on_page` | Finds broken (404) links. |
-| `compare_competitors` | Compares Backlinks/Traffic of 2 domains. |
-| `bulk_sitemap_audit` | Scans sitemap and audits multiple pages. |
-| `get_backlinks` | Gets DR and top backlinks (Ahrefs). |
-| `keyword_ideas` | Generates keywords (Ahrefs). |
+| `generate_audit_report` | **Best!** Generates a full Markdown SEO report combining all metrics. |
+| `onpage_audit` | Analyzes content structure, meta tags, and density. |
+| `analyze_page_speed` | Google PageSpeed Insights analysis (Mobile/Desktop). |
+| `check_schema_markup` | Validates JSON-LD Schema implementation. |
+| `check_broken_links_on_page` | Scans page for broken (404) internal/external links. |
+| `compare_competitors` | Compares Backlinks/Traffic/DR of 2 domains. |
+| `bulk_sitemap_audit` | Scans sitemap and performs quick audit on multiple pages. |
+| `get_backlinks` | Retrieves Domain Rating & Top Backlinks (Ahrefs Data). |
+| `keyword_ideas` | Generates keyword ideas & questions (Ahrefs Data). |
 
 ## 📝 License
 MIT

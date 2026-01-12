@@ -1,6 +1,6 @@
 [project]
 name = "advanced-seo-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Professional SEO Analysis MCP Server for AI Agents (Ahrefs, PSI, Technical)"
 readme = "README.md"
 authors = [
